@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './ColorButton.css';  // We'll create this file next
+import './ColorButton.css';
 
 function ColorButton({ initialColor }) {
   const [count, setCount] = useState(0);
@@ -30,7 +30,7 @@ function ColorButton({ initialColor }) {
   return (
     <div className="app-container">
       <div className="content">
-        <h1>Color Magic Button</h1>
+        <h1 data-text="Color Magic Button">Color Magic Button</h1>
         <p>Click the button for a colorful surprise!</p>
         
         <div className="button-container">
