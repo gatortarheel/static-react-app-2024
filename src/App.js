@@ -1,47 +1,82 @@
-import React, { useState } from 'react';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import './ColorButton.css';  // We'll create this file next
 
-function ColorButton({ color }) {
+function ColorButton({ initialColor }) {
   const [count, setCount] = useState(0);
-  const [currentColor, setCurrentColor] = useState(color);
+  const [currentColor, setCurrentColor] = useState(initialColor);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [trail, setTrail] = useState([]);
+
+  const generateRandomColor = () => {
+    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFBE0B', '#FB5607', '#3A86FF', '#8338EC'];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
 
   const handleClick = () => {
     setCount(count + 1);
-    setCurrentColor(generateRandomColor());
+    const newColor = generateRandomColor();
+    setCurrentColor(newColor);
+    setIsAnimating(true);
+    setTrail([...trail, { color: currentColor, id: Date.now() }].slice(-5));
   };
 
-  const generateRandomColor = () => {
-    return '#' + Math.floor(Math.random()*16777215).toString(16);
-  };
+  useEffect(() => {
+    if (isAnimating) {
+      const timer = setTimeout(() => setIsAnimating(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isAnimating]);
 
   return (
-    <button
-      onClick={handleClick}
-      style={{
-        backgroundColor: currentColor,
-        padding: '15px 30px',
-        fontSize: '18px',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        transition: 'all 0.3s ease',
-      }}
-    >
-      Clicked {count} times
-    </button>
-  );
-}
+    <div className="app-container">
+      <div className="content">
+        <h1>Color Magic Button</h1>
+        <p>Click the button for a colorful surprise!</p>
+        
+        <div className="button-container">
+          <div className="trail">
+            {trail.map((t, i) => (
+              <div
+                key={t.id}
+                className="trail-dot"
+                style={{ 
+                  backgroundColor: t.color,
+                  transform: `scale(${1 - i * 0.15})`,
+                  opacity: 1 - i * 0.2
+                }}
+              />
+            ))}
+          </div>
+          
+          <button
+            onClick={handleClick}
+            className={`color-button ${isAnimating ? 'animate' : ''}`}
+            style={{ backgroundColor: currentColor }}
+          >
+            <span>🎨 Clicked {count} {count === 1 ? 'time' : 'times'}</span>
+          </button>
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Color Changing Button</h1>
-        <p>Click the button to see the magic!</p>
-        <ColorButton color="#3498db" />
-      </header>
+          <div className="controls">
+            <button onClick={() => setTrail([])} className="control-button">
+              ⚡️ Clear Trail
+            </button>
+            <button 
+              onClick={() => {
+                setCount(0);
+                setCurrentColor(initialColor);
+                setTrail([]);
+              }} 
+              className="control-button"
+            >
+              🔄 Reset
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return <ColorButton initialColor="#3A86FF" />;
+}

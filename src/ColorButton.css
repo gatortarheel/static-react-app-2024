@@ -1,0 +1,91 @@
+.app-container {
+    min-height: 100vh;
+    background-color: #f9fafb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  
+  .content {
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 2.25rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #1f2937;
+  }
+  
+  p {
+    color: #4b5563;
+    margin-bottom: 2rem;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .trail {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .trail-dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    transition: all 0.3s;
+  }
+  
+  .color-button {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    padding: 1rem 2rem;
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+  }
+  
+  .color-button.animate {
+    transform: scale(1.05);
+  }
+  
+  .color-button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(0);
+    transition: transform 0.3s;
+    border-radius: 0.5rem;
+  }
+  
+  .color-button:hover::after {
+    transform: scale(1);
+  }
+  
+  .controls {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .control-button {
+    background: none;
+    border: none;
+    color: #4b5563;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .control-button:hover {
+    color: #1f2937;
+  }
